@@ -89,7 +89,7 @@ def callback_inline(call):
 
 @bot.message_handler(content_types=['document'])
 def upload_base(message):
-    if not str(message.document.file_name).endswith('.xls') or not str(message.document.file_name).endswith('.xlsx'):
+    if not (str(message.document.file_name).endswith('.xls') or str(message.document.file_name).endswith('.xlsx')):
         bot.reply_to(message, "Неверный формат файла")
         return
     os.remove('all_data/data.xls')
