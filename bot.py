@@ -70,7 +70,7 @@ def await_for_a_number(message):
 def findbycard(message):
     bot.send_message(message.chat.id, 'Введите номер карты:',
                      parse_mode='Markdown')
-    bot.register_next_step_handler(message, await_for_a_number)
+    bot.register_next_step_handler(message, await_for_a_card)
 
 
 def await_for_a_card(message):
