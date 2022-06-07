@@ -79,6 +79,8 @@ def save_ratings(articulate, title, rate, path=r'all_data/ratings.csv', path_xls
 
 
 def find_client(phone_number=None, card=None):
+    if not phone_number:
+        phone_number = 'little_bug_fix_:)'
     data = load_data()
     output = []
     for transaction in data:
