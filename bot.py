@@ -17,17 +17,17 @@ def start_message(message):
 
 @bot.message_handler(commands=['help'])
 def help_message(message):
-    bot.send_message(message.chat.id, "/number 88005553535 - Найти клиента по номеру телефона\n"
-                                      "/card 001 - Найти клиента по номеру карты\n"
+    bot.send_message(message.chat.id, "/number - Найти клиента по номеру телефона\n"
+                                      "/card - Найти клиента по номеру карты\n"
                                       "/download - Сгрузить рейтинг вин")
 
 
-def extract_arg(arg, message):
+'''def extract_arg(arg, message):
     try:
         return str(arg.split()[1:][0])
     except IndexError:
         bot.send_message(message.chat.id, 'Неверное значение',
-                         parse_mode='Markdown')
+                         parse_mode='Markdown')'''
 
 
 def send_vines(message, all_data):
@@ -35,7 +35,7 @@ def send_vines(message, all_data):
                      f"Имя: *{all_data[0]['name']}*\nНомер карты: *{all_data[0]['loyal_card_number']}*\nНомер телефона: *{all_data[0]['phone_number']}*",
                      parse_mode='Markdown')
 
-    for element in all_data[:15]:
+    for element in all_data[::-1][:15]:
         if not element['articulate']:
             element['articulate'] = 'Отсутствует'
         markup_inline = types.InlineKeyboardMarkup()
@@ -52,8 +52,13 @@ def send_vines(message, all_data):
 
 @bot.message_handler(commands=['number'])
 def findbynumber(message):
-    number = extract_arg(message.text, message)
-    all_data = find_client(phone_number=number)
+    bot.send_message(message.chat.id, 'Введите номер телефона:',
+                     parse_mode='Markdown')
+    bot.register_next_step_handler(message, await_for_a_number)
+
+
+def await_for_a_number(message):
+    all_data = find_client(phone_number=message.text)
     if len(all_data) == 0:
         bot.send_message(message.chat.id, 'Ничего не найдено',
                          parse_mode='Markdown')
@@ -63,8 +68,13 @@ def findbynumber(message):
 
 @bot.message_handler(commands=['card'])
 def findbycard(message):
-    card = extract_arg(message.text, message)
-    all_data = find_client(card=card)
+    bot.send_message(message.chat.id, 'Введите номер карты:',
+                     parse_mode='Markdown')
+    bot.register_next_step_handler(message, await_for_a_number)
+
+
+def await_for_a_card(message):
+    all_data = find_client(card=message.text)
     if len(all_data) == 0:
         bot.send_message(message.chat.id, 'Ничего не найдено',
                          parse_mode='Markdown')

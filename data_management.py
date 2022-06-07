@@ -83,7 +83,7 @@ def find_client(phone_number=None, card=None):
     output = []
     for transaction in data:
         clear_phone = str(''.join([str(s) for s in transaction['phone_number'] if s.isdigit()]))
-        if clear_phone == phone_number or transaction['loyal_card_number'].split()[0] == card:
+        if phone_number in clear_phone or transaction['loyal_card_number'].split()[0] == card:
             output.append(transaction)
     return output
 
