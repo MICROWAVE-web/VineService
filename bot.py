@@ -50,6 +50,14 @@ def send_vines(message, all_data):
                          parse_mode='Markdown', reply_markup=markup_inline)
 
 
+@bot.message_handler(commands=['reset_rating'])
+def reset_rating(message):
+    download_rating(message)
+    os.remove('all_data/ratings.xlsx')
+    os.remove('all_data/ratings.csv')
+    bot.send_message(message.chat.id, 'Рейтинг сброшен.')
+
+
 @bot.message_handler(commands=['number'])
 def findbynumber(message):
     bot.send_message(message.chat.id, 'Введите номер телефона:',
@@ -114,7 +122,7 @@ def upload_base(message):
 
 
 @bot.message_handler(commands=['download'])
-def start_message(message):
+def download_rating(message):
     rating_xlsx = open('all_data/ratings.xlsx', 'rb')
     bot.send_document(message.chat.id, rating_xlsx)
 
